@@ -1,0 +1,107 @@
+html{
+    font-family: Verdana,sans-serif;
+}
+body{
+    margin:0;
+    counter-reset: number;
+}
+@keyframes noti {
+    from{
+        transform: scale(0);
+    }
+    to{
+        transform: scale(1);
+    }
+    
+}
+.num::before {
+    counter-increment: number; 
+    content: counter(number); 
+  }
+
+.grid{
+    display: flex;
+}
+.colum2{
+    width: 20%;
+    background-color: black;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+.colum2 a{
+    text-decoration: none;
+    color: #fff;   
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 25px;
+    font-size: 15px;
+    background-color: black;
+    border-bottom: 1px solid white;
+   
+}
+h3{
+    color: #fff;
+}
+.colum2 a:hover{
+    background-color: rgba(0, 0, 0, 0.2);
+   
+}
+
+.colum10{
+    width: 83%;
+
+}
+.header{
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 2);
+    display: flex;
+    height: 70px;
+    background-color: #009688;
+    font-size: 25px;
+    color: white;
+    align-items: center;
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.header img{
+    height: 40px;
+    border-radius:50%;    
+}
+.header span{
+    display: block;
+    font-size: 1.1rem;
+    margin-top: 12px;
+ 
+}
+/*********************************Trang chủ admin********************************/
+ .box-main{
+    display: flex;
+}
+.box{
+    width: 25%;
+    height: 135px;
+    background-color: green;
+    margin: 20px;
+    border-radius: 10px;
+   text-align: center;   
+}
+.box-content
+{
+    margin-top: 15%;
+    
+}
+.fas{
+    font-size: 2rem;
+}
+.fa-windows{
+    font-size: 2rem;
+}
+.box a{
+    text-decoration: none;
+    color: white;
+}
+
+

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="QLNCC.css">
+    <title>Quản lý nhà cung cấp</title>
+</head>
+<body onload="renderListSupplier()">
+    <div class="grid">
+        <div class="colum2">
+
+            <h3 style="padding-left: 25px;">Menu</h3>
+            <!-- <a href="">Bảng điều khiển</a> -->
+            <a href="admin.html">Danh mục</a>
+            <a href="QLLSP.html">Quản lý loại sản phẩm</a>
+            <a href="quanlysanpham.html">Quản lý sản phẩm</a>
+            <a href="quanlynhanvien.html">Quản lý nhân viên</a>
+            <a href="quanlykhachhang.html">Quản lý khách hàng</a>
+            <a href="quanlydonhangnhban.html">Quản lý đơn hàng bán</a>
+            <a href="quanlydonhangnhap.html">Quản lý đơn hàng nhập</a>
+            <a href="quanlynhacungcap.html">Quản lý nhà cung cấp</a>
+            <a href="/login/login.html"> Đăng xuất</a>
+            
+        </div> 
+        <div class="form-ncc">
+            <h3>Thông tin nhà cung cấp</h3>
+            <label>Mã nhà cung cấp</label>
+            <input type="text" id="mancc"> <br>
+            <span id="mancc-error" class="error"></span>
+            <br>
+            <label>Tên nhà cung cấp</label>
+            <input type="text" id="fullname" ><br>
+            <span id="fullname-error" class="error"></span>
+            <br>
+            <label>Địa chỉ</label>
+            <input type="text" id="address"><br>
+            <span id="address-error" class="error"></span>
+            <br>
+            <label>Số điện thoại</label>
+            <input type="text" id="phone"> <br>
+            <span id="phone-error" class="error"></span>
+            <br>
+            <label >&nbsp;</label>
+            <button onclick="save()">Lưu lại</button>
+        </div>
+    </div>
+    <div class="list-ncc" id="list-ncc">
+        <h3>Danh sách nhà cung cấp </h3>
+        <table id="grid-ncc" width="650px" cellpadding="0" cellpadding="0">
+            
+        </table>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+<script>
+    let editIndex = -1; // Biến để lưu trữ vị trí nhà cung cấp đang được chỉnh sửa
+    
+    function save() {
+        let mancc = document.getElementById('mancc').value;
+        let fullname = document.getElementById('fullname').value;
+        let address = document.getElementById('address').value;
+        let phone = document.getElementById('phone').value;
+        
+        // Kiểm tra và xử lý lỗi
+        let isValid = true;
+        if (_.isEmpty(mancc)){
+            document.getElementById('mancc-error').innerHTML = 'Vui lòng nhập mã nhà cung cấp!';
+            isValid = false;
+        } else if (mancc.trim().length > 10) {
+            document.getElementById('mancc-error').innerHTML = 'Mã nhà cung cấp không được lớn hơn 10 ký tự!';
+            isValid = false;
+        } else {
+            document.getElementById('mancc-error').innerHTML = '';
+        }
+        
+        if (_.isEmpty(fullname)){
+            document.getElementById('fullname-error').innerHTML = 'Vui lòng nhập tên nhà cung cấp!';
+            isValid = false;
+        } else if(fullname.trim().length <= 2) {
+            document.getElementById('fullname-error').innerHTML = 'Tên nhà cung cấp không được nhỏ hơn 2 ký tự!';
+            isValid = false;
+        } else if (fullname.trim().length > 50) {
+            document.getElementById('fullname-error').innerHTML = 'Tên nhà cung cấp không được lớn hơn 50 ký tự!';
+            isValid = false;
+        } else {
+            document.getElementById('fullname-error').innerHTML = '';
+        }
+
+        if (_.isEmpty(address)){
+            document.getElementById('address-error').innerHTML = 'Vui lòng nhập địa chỉ!';
+            isValid = false;
+        } else if(address.trim().length <= 2) {
+            document.getElementById('address-error').innerHTML = 'Địa chỉ không được nhỏ hơn 2 ký tự!';
+            isValid = false;
+        } else if (address.trim().length > 50) {
+            document.getElementById('address-error').innerHTML = 'Địa chỉ không được lớn hơn 50 ký tự!';
+            isValid = false;
+        } else {
+            document.getElementById('address-error').innerHTML = '';
+        }
+
+        if (_.isEmpty(phone)) {
+            document.getElementById('phone-error').innerHTML = 'Vui lòng nhập số điện thoại!';
+            isValid = false;
+        } else if(phone.trim().length > 10) {
+            document.getElementById('phone-error').innerHTML = 'Số điện thoại không đúng!';
+            isValid = false;
+        } else {
+            document.getElementById('phone-error').innerHTML = '';
+        }
+        
+        if(isValid){
+            let suppliers = localStorage.getItem('suppliers') ? JSON.parse(localStorage.getItem('suppliers')) : [];
+            if (editIndex === -1) {
+                // Thêm mới nhà cung cấp
+                suppliers.push({
+                    mancc: mancc,
+                    fullname: fullname,
+                    address: address,
+                    phone: phone,
+                });
+            } else {
+                // Chỉnh sửa nhà cung cấp
+                suppliers[editIndex] = {
+                    mancc: mancc,
+                    fullname: fullname,
+                    address: address,
+                    phone: phone,
+                };
+                editIndex = -1; // Reset editIndex sau khi lưu
+            }
+            localStorage.setItem('suppliers', JSON.stringify(suppliers));
+            renderListSupplier();
+            clearInputFields(); // Xóa trường nhập liệu sau khi lưu
+        }
+    }
+
+    function renderListSupplier() {
+        let suppliers = localStorage.getItem('suppliers') ? JSON.parse(localStorage.getItem('suppliers')) : [];
+        if (suppliers.length === 0) {
+            document.getElementById('list-ncc').style.display = 'none';
+            return false;
+        }
+
+        document.getElementById('list-ncc').style.display = 'block';
+        let tableContent = `<tr>
+            <td>STT</td>
+            <td width='70'>Mã nhà cung cấp</td>
+            <td>Tên nhà cung cấp</td>
+            <td>Địa chỉ</td>
+            <td>Số điện thoại</td>
+            <td>Hành động</td></tr>`;
+
+        suppliers.forEach((Supplier, index) => {
+            let SupplierId = index;
+            index++;
+            tableContent +=`<tr>
+                <td>${index}</td>
+                <td>${Supplier.mancc}</td>
+                <td>${Supplier.fullname}</td>
+                <td>${Supplier.address}</td>
+                <td>${Supplier.phone}</td>
+                <td>
+                    <a href='#' onclick='editSupplier(${SupplierId})'>Edit</a> | <a href='#' onclick='deleteSupplier(${SupplierId})'>Delete</a>
+                </td>
+            </tr>`;
+        })
+        document.getElementById('grid-ncc').innerHTML = tableContent;
+    }
+
+    function deleteSupplier(id) {
+        let suppliers = localStorage.getItem('suppliers') ? JSON.parse(localStorage.getItem('suppliers')) : [];
+        suppliers.splice(id, 1);
+        localStorage.setItem('suppliers', JSON.stringify(suppliers));
+        renderListSupplier();
+    }
+
+    function editSupplier(id) {
+        let suppliers = localStorage.getItem('suppliers') ? JSON.parse(localStorage.getItem('suppliers')) : [];
+        let supplier = suppliers[id];
+        document.getElementById('mancc').value = supplier.mancc;
+        document.getElementById('fullname').value = supplier.fullname;
+        document.getElementById('address').value = supplier.address;
+        document.getElementById('phone').value = supplier.phone;
+        editIndex = id; // Lưu trữ vị trí nhà cung cấp đang được chỉnh sửa
+    }
+
+    function clearInputFields() {
+        document.getElementById('mancc').value = '';
+        document.getElementById('fullname').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('phone').value = '';
+    }
+</script>
+</html>

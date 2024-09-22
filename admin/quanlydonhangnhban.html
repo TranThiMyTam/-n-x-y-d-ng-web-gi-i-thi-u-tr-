@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="qlDHB.css">
+    <title>Đơn hàng bán</title>
+</head>
+<body onload="renderListDHB()">
+    <div class="grid">
+        <div class="colum2">
+            <h3 style="padding-left: 25px;">Menu</h3>
+            <a href="admin.html">Danh mục</a>
+            <a href="QLLSP.html">Quản lý loại sản phẩm</a>
+            <a href="quanlysanpham.html">Quản lý sản phẩm</a>
+            <a href="quanlynhanvien.html">Quản lý nhân viên</a>
+            <a href="quanlykhachhang.html">Quản lý khách hàng</a>
+            <a href="quanlydonhangnhban.html">Quản lý đơn hàng bán</a>
+            <a href="quanlydonhangnhap.html">Quản lý đơn hàng nhập</a>
+            <a href="quanlynhacungcap.html">Quản lý nhà cung cấp</a>
+            <a href="/login/login.html">Đăng xuất</a>
+        </div>
+        <div class="form-DHB">
+            <h3>Thông tin đơn hàng bán</h3>
+            <label>Mã đơn hàng bán</label>
+            <input type="text" id="madhb"> <br>
+            <span id="madhb-error" class="error"></span>
+            <br>
+            <label>Mã khách hàng</label>
+            <input type="text" id="makh"><br>
+            <span id="makh-error" class="error"></span>
+            <br>
+            <label>Địa chỉ</label>
+            <input type="text" id="address"><br>
+            <span id="address-error" class="error"></span>
+            <br>
+            <label>Ngày bán</label>
+            <input type="datetime-local" id="ngayban"> <br>
+            <span id="ngayban-error" class="error"></span>
+            <br>
+            <label>Ghi chú</label>
+            <input type="text" id="ghichu"> <br>
+            <span id="ghichu-error" class="error"></span>
+            <br>
+            <label>Thành tiền</label>
+            <input type="text" id="thanhtien"> <br>
+            <span id="thanhtien-error" class="error"></span>
+            <br>
+            <label>&nbsp;</label>
+            <button onclick="save()">Lưu lại</button>
+        </div>
+    </div>
+    <div class="list-DHB" id="list-DHB">
+        <h3>Danh sách đơn hàng bán</h3>
+        <table id="grid-DHB" width="650px" cellpadding="0" cellspacing="0">
+        </table>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+<script>
+    console.log(localStorage.getItem('DHBs'));
+
+    function save() {
+        let madhb = document.getElementById('madhb').value;
+        let makh = document.getElementById('makh').value;
+        let address = document.getElementById('address').value;
+        let ngayban = document.getElementById('ngayban').value;
+        let ghichu = document.getElementById('ghichu').value;
+        let thanhtien = document.getElementById('thanhtien').value;
+
+        // Kiểm tra và xử lý lỗi
+        let isValid = true;
+
+        if (_.isEmpty(madhb)) {
+            document.getElementById('madhb-error').innerHTML = 'Vui lòng nhập mã đơn hàng bán!';
+            isValid = false;
+        } else if (madhb.trim().length > 10) {
+            document.getElementById('madhb-error').innerHTML = 'Mã đơn hàng bán không được lớn hơn 10 ký tự!';
+            isValid = false;
+        } else {
+            document.getElementById('madhb-error').innerHTML = '';
+        }
+
+        if (_.isEmpty(makh)) {
+            document.getElementById('makh-error').innerHTML = 'Vui lòng nhập mã khách hàng!';
+            isValid = false;
+        } else if (makh.trim().length > 10) {
+            document.getElementById('makh-error').innerHTML = 'Mã khách hàng không được lớn hơn 10 ký tự!';
+            isValid = false;
+        } else {
+            document.getElementById('makh-error').innerHTML = '';
+        }
+
+        if (_.isEmpty(address)) {
+            document.getElementById('address-error').innerHTML = 'Vui lòng nhập địa chỉ!';
+            isValid = false;
+        } else if (address.trim().length <= 2) {
+            document.getElementById('address-error').innerHTML = 'Địa chỉ không được nhỏ hơn 2 ký tự!';
+            isValid = false;
+        } else if (address.trim().length > 50) {
+            document.getElementById('address-error').innerHTML = 'Địa chỉ không được lớn hơn 50 ký tự!';
+            isValid = false;
+        } else {
+            document.getElementById('address-error').innerHTML = '';
+        }
+
+        if (_.isEmpty(ghichu)) {
+            document.getElementById('ghichu-error').innerHTML = 'Vui lòng nhập ghi chú!';
+            isValid = false;
+        } else if (ghichu.trim().length <= 2) {
+            document.getElementById('ghichu-error').innerHTML = 'Ghi chú không được nhỏ hơn 2 ký tự!';
+            isValid = false;
+        } else if (ghichu.trim().length > 50) {
+            document.getElementById('ghichu-error').innerHTML = 'Ghi chú không được lớn hơn 50 ký tự!';
+            isValid = false;
+        } else {
+            document.getElementById('ghichu-error').innerHTML = '';
+        }
+
+        if (_.isEmpty(ngayban)) {
+            document.getElementById('ngayban-error').innerHTML = 'Vui lòng chọn ngày bán!';
+            isValid = false;
+        } else {
+            document.getElementById('ngayban-error').innerHTML = '';
+        }
+
+        if (_.isEmpty(thanhtien)) {
+            document.getElementById('thanhtien-error').innerHTML = 'Vui lòng nhập thành tiền!';
+            isValid = false;
+        } else {
+            document.getElementById('thanhtien-error').innerHTML = '';
+        }
+
+        // Lưu vào danh sách đơn hàng bán
+        if (isValid) {
+            let DHBs = localStorage.getItem('DHBs') ? JSON.parse(localStorage.getItem('DHBs')) : [];
+            DHBs.push({
+                madhb: madhb,
+                makh: makh,
+                address: address,
+                ngayban: ngayban,
+                ghichu: ghichu,
+                thanhtien: thanhtien
+            });
+            localStorage.setItem('DHBs', JSON.stringify(DHBs));
+            renderListDHB();
+            clearInputFields(); // Xóa trường nhập liệu sau khi lưu
+        }
+    }
+
+    function renderListDHB() {
+        let DHBs = localStorage.getItem('DHBs') ? JSON.parse(localStorage.getItem('DHBs')) : [];
+        if (DHBs.length === 0) {
+            document.getElementById('list-DHB').style.display = 'none';
+            return false;
+        }
+
+        document.getElementById('list-DHB').style.display = 'block';
+        let tableContent = `<tr>
+            <td>STT</td>
+            <td width='50'>Mã đơn hàng bán</td>
+            <td>Mã khách hàng</td>
+            <td>Địa chỉ</td>
+            <td>Ngày bán</td>
+            <td>Ghi chú</td>
+            <td>Thành tiền</td>
+            <td>Hành động</td></tr>`;
+
+        DHBs.forEach((DHB, index) => {
+            tableContent += `<tr>
+                <td>${index + 1}</td>
+                <td>${DHB.madhb}</td>
+                <td>${DHB.makh}</td>
+                <td>${DHB.address}</td>
+                <td>${DHB.ngayban}</td>
+                <td>${DHB.ghichu}</td>
+                <td>${DHB.thanhtien}</td>
+                <td>
+                    <a href='#' onclick='editDHB(${index})'>Edit</a> 
+                    <a href='#' onclick='deleteDHB(${index})'>Delete</a>
+                </td>
+            </tr>`;
+        });
+
+        document.getElementById('grid-DHB').innerHTML = tableContent;
+    }
+
+    function deleteDHB(id) {
+        let DHBs = localStorage.getItem('DHBs') ? JSON.parse(localStorage.getItem('DHBs')) : [];
+        DHBs.splice(id, 1);
+        localStorage.setItem('DHBs', JSON.stringify(DHBs));
+        renderListDHB();
+    }
+
+    function editDHB(index) {
+        let DHBs = localStorage.getItem('DHBs') ? JSON.parse(localStorage.getItem('DHBs')) : [];
+        let DHB = DHBs[index];
+
+        document.getElementById('madhb').value = DHB.madhb;
+        document.getElementById('makh').value = DHB.makh;
+        document.getElementById('address').value = DHB.address;
+        document.getElementById('ngayban').value = DHB.ngayban;
+        document.getElementById('ghichu').value = DHB.ghichu;
+        document.getElementById('thanhtien').value = DHB.thanhtien;
+
+        deleteDHB(index);
+    }
+
+    function clearInputFields() {
+        document.getElementById('madhb').value = '';
+        document.getElementById('makh').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('ngayban').value = '';
+        document.getElementById('ghichu').value = '';
+        document.getElementById('thanhtien').value = '';
+
+        document.getElementById('madhb-error').innerHTML = '';
+        document.getElementById('makh-error').innerHTML = '';
+        document.getElementById('address-error').innerHTML = '';
+        document.getElementById('ngayban-error').innerHTML = '';
+        document.getElementById('ghichu-error').innerHTML = '';
+        document.getElementById('thanhtien-error').innerHTML = '';
+    }
+</script>
+</html>

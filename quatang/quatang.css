@@ -1,0 +1,227 @@
+body{
+    width: 100%;
+}
+#header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 80px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0, 0.06);
+}
+ 
+#navbar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#navbar li{
+    list-style: none;
+    padding: 0 20px;
+    position: relative;
+}
+#navbar li a{
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+}
+#navbar li a:hover,
+#navbar li a.active{
+    color: green;
+}
+
+#navbar li a.active::after,
+#navbar li a:hover::after{
+    content: "";
+    width: 30%;
+    height: 2px;
+    background: green;
+    position: absolute;
+    bottom: -4px;
+    left: 20px;
+}
+
+
+
+#wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+    font-size: 14px;
+    color: #111;
+    line-height: 1.15;
+    color: #555 ;
+}
+.headline {
+    text-align: center;
+    margin: 40px 0px;
+}
+h4 {
+    font-size: 15px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    display: inline-block;
+    font-weight: 600;
+    border: 1px solid #bebebe;
+    margin-bottom: 20px;
+}
+ul.products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-left: 0px;
+    padding-right: 10px;
+}
+ul.products li{
+    flex-basis: 25%;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+    list-style: none;
+}
+ul.products li img{
+    max-width: 100%;
+    height: auto;
+}
+ul.products li .product-top{
+    position: relative;
+    overflow: hidden;
+}
+ul.products li .product-top .product-thumb{
+    display: block;
+}
+ul.products li .product-top .product-thumb img{
+    display: block;
+}
+ul.products li .product-top a.cart57,
+ul.products li .product-top a.cart58,
+ul.products li .product-top a.cart59,
+ul.products li .product-top a.cart60,
+ul.products li .product-top a.cart61,
+ul.products li .product-top a.cart62,
+ul.products li .product-top a.cart63,
+ul.products li .product-top a.cart64,
+ul.products li .product-top a.cart65,
+ul.products li .product-top a.cart66,
+ul.products li .product-top a.cart67,
+ul.products li .product-top a.cart68
+{
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    background-color:green;
+    color: #fff;
+    padding: 10px 0px;
+    position: absolute;
+    bottom: -36px;
+    width: 100%;
+    transition: 0.25s ease-in-out;
+    opacity: 0.5;
+}
+ul.products li:hover a.cart57,
+ul.products li:hover a.cart58,
+ul.products li:hover a.cart59,
+ul.products li:hover a.cart60,
+ul.products li:hover a.cart61,
+ul.products li:hover a.cart62,
+ul.products li:hover a.cart63,
+ul.products li:hover a.cart64,
+ul.products li:hover a.cart65,
+ul.products li:hover a.cart66,
+ul.products li:hover a.cart67,
+ul.products li:hover a.cart68
+{
+    bottom: 0px;
+}   
+
+ul.products li .product-info {
+    padding: 10px 0;
+}
+ul.products li .product-info a{
+    display: block;
+    text-decoration: none;
+}
+ul.products li .product-info a.product-cat{
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #9e9e9e;
+    padding: 3px 0px;
+}
+ul.products li .product-info a.product-name {
+    color: #334862;
+    padding: 3px 0px;
+}
+ul.products li .product-info a.product-price {
+    color: #111;
+    padding: 2px 0;
+    font-weight: 600;
+}
+#footer {
+    width: 100%;
+    background:rgb(0,0,0,0.79);
+    height: 322px;
+    margin-top:20px;
+    padding:0px 63px;
+    padding-top:57px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#footer {
+    width: 90%;
+    background: #362f2f;
+    height: 322px;
+    margin-top:20px;
+    padding:0px 64px;
+    padding-top:57px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#footer .box {
+    width: 300px;
+    color:#fff;
+}
+#footer .box .logo img{
+    width: 25%;
+}
+
+
+#footer .box .quick-menu {
+    margin-top:20px;
+
+}
+
+
+#footer .box .quick-menu .item{
+    margin-bottom:12px;
+    /* margin-left: 10px; */
+
+}
+#footer .box .quick-menu ,.item a{
+    color:#fff;
+    text-decoration: none;
+    margin-left: 0;
+}
+
+
+
+#footer .box form input {
+    width: 290px;
+    height: 42px;
+    background:transparent;
+    padding-left:20px;
+    color:#fff;
+    margin-top:5px;
+}
+
+#footer .box form button {
+    background:#362f2f;
+    box-shadow: 5px 5px 4px rgba(0,0,0.25);
+    width: 163px;
+    height: 38px;
+    margin-top:29px;
+    color:#fff;
+}

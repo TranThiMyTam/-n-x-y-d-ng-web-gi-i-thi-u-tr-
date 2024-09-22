@@ -1,0 +1,222 @@
+body{
+    width: 100%;
+}
+#header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 80px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0, 0.06);
+}
+ 
+#navbar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#navbar li{
+    list-style: none;
+    padding: 0 20px;
+    position: relative;
+}
+#navbar li a{
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+}
+#navbar li a:hover,
+#navbar li a.active{
+    color: green;
+}
+
+#navbar li a.active::after,
+#navbar li a:hover::after{
+    content: "";
+    width: 30%;
+    height: 2px;
+    background: green;
+    position: absolute;
+    bottom: -4px;
+    left: 20px;
+}
+
+.trangchu{
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background: wheat;
+}
+.trangchu .content{
+    z-index: 888;
+    color: #fff;
+    width: 70%;
+    margin-top: -50px;
+    display: none;
+    padding-left:15px ;
+}
+.trangchu .content.active {
+    display: block;
+}
+.trangchu .content h1 {
+    font-size: 40px;
+    /* font-weight: 800; */
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    line-height: 75px;
+    margin-bottom: 0;
+}
+.trangchu .content p{
+    margin-bottom: 270px;   
+}
+.trangchu .content a {
+    background: rgb(81, 89, 81);
+    padding: 15px 35px;
+    color: #fff;
+    font-size: 1.1em;
+    /* font-weight: 500; */
+    text-decoration: none;
+    border-radius: 2px;
+    
+}
+.trangchu .media-icons{
+    z-index: 888;
+    position: absolute;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    transition: 0.5s ease;
+}
+.trangchu .media-icons a{
+    color: #fff;
+    font-size: 1.6em;
+    transition: 0.3s ease;
+}
+.trangchu .media-icons a:not(:last-child){
+    margin-bottom: 20px;
+}
+.trangchu .media-icons a:hover{
+    transform: scale(1.3);
+}
+.trangchu video {
+    z-index: 000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.slider-nav {
+    z-index: 888;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(80px);
+    margin-bottom: 12px;
+}
+.slider-nav .nav-btn {
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    margin-bottom: 90px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 2px rgba(255,255,255,0.5);
+    transition: 0.3s ease;
+}
+.slider-nav .nav-btn.active {
+    background: rgb(176, 247, 176);
+}
+.slider-nav .nav-btn:not(:last-child){
+    margin-right: 20px;
+}
+.slider-nav .nav-btn:hover {
+    transform: scale(1.2);
+}
+.video-slide {
+    position: absolute;
+    width: 100%;
+    clip-path: circle(0% at 0 50%);
+}
+.video-slide.active {
+    clip-path: circle(150% at 0 50%);
+    /* transition: 5s ease; */
+}
+
+@media (max-width: 1040px){
+    header{
+       padding: 12px 20px; 
+       display: none;
+    }
+    section{
+        padding: 100px 200px;
+    }
+    .trangchu .media-icons{
+        right: 30px;
+    }
+
+
+}
+
+#footer {
+    width: 90%;
+    background: #362f2f;
+    height: 322px;
+    margin-top:20px;
+    padding:0px 64px;
+    padding-top:57px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#footer .box {
+    width: 300px;
+    color:#fff;
+}
+#footer .box .logo img{
+    width: 25%;
+}
+
+
+#footer .box .quick-menu {
+    margin-top:20px;
+
+}
+
+
+#footer .box .quick-menu .item{
+    margin-bottom:12px;
+    /* margin-left: 10px; */
+
+}
+#footer .box .quick-menu ,.item a{
+    color:#fff;
+    text-decoration: none;
+    margin-left: 0;
+}
+
+
+
+#footer .box form input {
+    width: 290px;
+    height: 42px;
+    background:transparent;
+    padding-left:20px;
+    color:#fff;
+    margin-top:5px;
+}
+
+#footer .box form button {
+    background:#362f2f;
+    box-shadow: 5px 5px 4px rgba(0,0,0.25);
+    width: 163px;
+    height: 38px;
+    margin-top:29px;
+    color:#fff;
+}

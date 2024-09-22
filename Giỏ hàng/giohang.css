@@ -1,0 +1,155 @@
+body{
+    width: 100%;
+}
+#header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 80px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0, 0.06);
+}
+ 
+#navbar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#navbar li{
+    list-style: none;
+    padding: 0 20px;
+    position: relative;
+}
+#navbar li a{
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+}
+#navbar li a:hover,
+#navbar li a.active{
+    color: green;
+}
+
+#navbar li a.active::after,
+#navbar li a:hover::after{
+    content: "";
+    width: 30%;
+    height: 2px;
+    background: green;
+    position: absolute;
+    bottom: -4px;
+    left: 20px;
+}
+/* thân */
+.content{
+	margin:0 auto;
+	padding-left: 30px;
+	display: block;
+	width: 70%;
+	background-color: white;
+}
+.tb{	
+	text-align: center; 
+	width: 100%; 
+	padding-left: 0px;
+	border-bottom: 1px solid green;
+	padding-top: 20px;	
+	padding-bottom: 20px;
+}
+.total-price{
+	color: black;
+	font-size: 1.3rem;
+}
+
+.img-sp{
+	width: 60px;
+	height:60px;
+}	
+
+.item-name{
+	font-size: 16px;	
+}
+
+/* .new-price{
+	color: red;
+	font-size: 1.3rem;
+} */
+.cart-product{
+	padding-left: 20px;
+}
+.soluong{	
+	width: 10px;
+	height: 20px;
+	border: none;
+	outline: none;
+}
+
+h3{
+	padding-left: 100px;
+}
+.fa-trash{
+    margin-top: 10px;
+    font-size: 1.5rem;
+    color: white;
+}
+
+#footer {
+    width: 90%;
+    background: #362f2f;
+    height: 322px;
+    margin-top:20px;
+    padding:0px 64px;
+    padding-top:57px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#footer .box {
+    width: 300px;
+    color:#fff;
+}
+#footer .box h3{
+    padding-left: 0;
+}
+#footer .box .logo img{
+    width: 25%;
+}
+
+
+#footer .box .quick-menu {
+    margin-top:20px;
+
+}
+
+
+#footer .box .quick-menu .item{
+    margin-bottom:12px;
+    /* margin-left: 10px; */
+
+}
+#footer .box .quick-menu ,.item a{
+    color:#fff;
+    text-decoration: none;
+    margin-left: 0;
+}
+
+
+
+#footer .box form input {
+    width: 290px;
+    height: 42px;
+    background:transparent;
+    padding-left:20px;
+    color:#fff;
+    margin-top:5px;
+}
+
+#footer .box form button {
+    background:#362f2f;
+    box-shadow: 5px 5px 4px rgba(0,0,0.25);
+    width: 163px;
+    height: 38px;
+    margin-top:29px;
+    color:#fff;
+}

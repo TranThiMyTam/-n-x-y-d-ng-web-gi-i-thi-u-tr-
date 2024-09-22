@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="qllsp.css">
+    <title>Quản lý loại sản phẩm</title>
+</head>
+<body onload="renderListType()">
+    <div class="grid">
+        <div class="colum2">
+
+            <h3 style="padding-left: 25px;">Menu</h3>
+            <!-- <a href="">Bảng điều khiển</a> -->
+            <a href="admin.html">Danh mục</a>
+            <a href="QLLSP.html">Quản lý loại sản phẩm</a>
+            <a href="quanlysanpham.html">Quản lý sản phẩm</a>
+            <a href="quanlynhanvien.html">Quản lý nhân viên</a>
+            <a href="quanlykhachhang.html">Quản lý khách hàng</a>
+            <a href="quanlydonhangnhban.html">Quản lý đơn hàng bán</a>
+            <a href="quanlydonhangnhap.html">Quản lý đơn hàng nhập</a>
+            <a href="quanlynhacungcap.html">Quản lý nhà cung cấp</a>
+            <a href="/login/login.html"> Đăng xuất</a>
+            
+        </div>
+        <div class="form-LSP">
+            <h3>Thông tin loại sản phẩm</h3>
+            <label>Mã loại sản phẩm</label>
+            <input type="text" id="malsp"> <br>
+            <span id="malsp-error" class="error"></span>
+            <br>
+            <label>Tên loại sản phẩm</label>
+            <input type="text" id="fullname" ><br>
+            <span id="fullname-error" class="error"></span>
+            <br>
+            <label>Mô tả</label>
+            <input type="text" id="mota"><br>
+            <span id="mota-error" class="error"></span>
+            <label >&nbsp;</label>
+            <button onclick="save()">Lưu lại</button>
+        </div>
+       
+    </div>
+    <div class="list-LSP" id="list-LSP">
+        <h3>Danh sách loại sản phẩm </h3>
+        <table id="grid-LSP" width="550px" cellpadding="0" cellpadding="0">
+            
+        </table>
+    </div>
+    
+</body>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+<script>
+    console.log( localStorage.getItem('Types'));
+    function save(){
+        let malsp = document.getElementById('malsp').value;
+        let fullname = document.getElementById('fullname').value;
+        let mota = document.getElementById('mota').value;
+       
+        // Validate input fields (malsp, fullname, mota)...
+        if (_.isEmpty(malsp)){
+            malsp ='';
+            document.getElementById('malsp-error').innerHTML = 'Vui lòng nhập mã loại sản phẩm!';
+        }else if (malsp.trim().length >10) {
+            malsp ='';
+            document.getElementById('malsp-error').innerHTML = ' Mã loại sản phẩm không được lớn hơn 10 ký tự!';
+        }
+        else {
+            document.getElementById('malsp-error').innerHTML = '';
+        }
+        
+        if (_.isEmpty(fullname)){
+            fullname = '';
+            document.getElementById('fullname-error').innerHTML = 'Vui lòng nhập tên loại sản phẩm!';
+
+        } else if(fullname.trim().length <= 2) {
+            fullname = '';
+            document.getElementById('fullname-error').innerHTML = ' Tên loại sản phẩm không được nhỏ hơn 2 ký tự!';
+        }else if (fullname.trim().length >50) {
+            fullname = '';
+            document.getElementById('fullname-error').innerHTML = ' Tên loại sản phẩm không được lớn hơn 50 ký tự!';
+        }
+        else {
+            document.getElementById('fullname-error').innerHTML = '';
+
+        }
+        
+        if (_.isEmpty(mota)){
+            mota = '';
+            document.getElementById('mota-error').innerHTML = 'Vui lòng nhập mô tả!';
+
+        } else if(mota.trim().length <= 2) {
+            mota = '';
+            document.getElementById('mota-error').innerHTML = ' Mô tả không được nhỏ hơn 2 ký tự!';
+        }else if (mota.trim().length >50) {
+            mota = '';
+            document.getElementById('mota-error').innerHTML = ' Mô tả không được lớn hơn 50 ký tự!';
+        }
+        else {
+            document.getElementById('mota-error').innerHTML = '';
+
+        }
+        
+        // Save to localStorage
+        if(malsp && fullname && mota){
+           let Types = localStorage.getItem('Types') ? JSON.parse(localStorage.getItem('Types')) : [];
+           Types.push({
+                malsp: malsp,
+                fullname: fullname,
+                mota: mota,
+            });
+            localStorage.setItem('Types', JSON.stringify(Types));
+            renderListType();
+            clearInputFields(); // Clear input fields after saving
+        }
+        
+    }   
+
+    function renderListType(){
+        let Types = localStorage.getItem('Types') ? JSON.parse(localStorage.getItem('Types')) : [];
+        if (Types.length === 0) {
+            document.getElementById('list-LSP').style.display = 'none';
+            return false;
+        } 
+
+        document.getElementById('list-LSP').style.display = 'block';
+        let tableContent = `<tr>
+            <td>STT</td>
+            <td>Mã loại sản phẩm</td>
+            <td>Tên loại sản phẩm</td>
+            <td>Mô tả</td>
+            <td>Hành động</td></tr>`;
+
+        Types.forEach((Typee, index) => {
+            let TypeeId = index;
+            index++;
+            tableContent +=`<tr>
+                <td>${index}</td>
+                <td>${Typee.malsp}</td>
+                <td>${Typee.fullname}</td>
+                <td>${Typee.mota}</td>
+                <td>
+                    <a href='#' onclick='editType(${TypeeId})'>Edit</a>| <a href='#' onclick='deleteType(${TypeeId})'>Delete</a>
+                </td>
+            </tr>`;
+         })
+         document.getElementById('grid-LSP').innerHTML = tableContent;
+    }
+
+    function deleteType(id){
+        let Types = localStorage.getItem('Types') ? JSON.parse(localStorage.getItem('Types')) : [];
+        Types.splice(id,1);
+        localStorage.setItem('Types', JSON.stringify(Types));
+        renderListType();
+    }
+
+    function editType(id){
+        let Types = localStorage.getItem('Types') ? JSON.parse(localStorage.getItem('Types')) : [];
+        let selectedType = Types[id];
+
+        document.getElementById('malsp').value = selectedType.malsp;
+        document.getElementById('fullname').value = selectedType.fullname;
+        document.getElementById('mota').value = selectedType.mota;
+
+        // Optionally, you can store the current editing index in a hidden field or variable for update
+    }
+
+    function clearInputFields(){
+        document.getElementById('malsp').value = '';
+        document.getElementById('fullname').value = '';
+        document.getElementById('mota').value = '';
+    }
+</script>
+
+</html>

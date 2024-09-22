@@ -1,0 +1,146 @@
+body{
+    width: 100%;
+}
+#header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 80px;
+    background: #fff;
+}
+ 
+#navbar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#navbar li{
+    list-style: none;
+    padding: 0 20px;
+    position: relative;
+}
+#navbar li a{
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+}
+#navbar li a:hover,
+#navbar li a.active{
+    color: green;
+}
+
+#navbar li a.active::after,
+#navbar li a:hover::after{
+    content: "";
+    width: 30%;
+    height: 2px;
+    background: green;
+    position: absolute;
+    bottom: -4px;
+    left: 20px;
+}
+/* thân */
+.contact-detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.contact-detail .details{
+    padding-left: 25px;
+    width: 40%;
+}
+.contact-detail .details span {
+    font-size: 12px;
+    margin-top: 20px;
+}
+.contact-detail .details h2{
+    font-size: 26px;
+    line-height: 35px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+   
+}
+.contact-detail .details h3{
+    font-size: 16px;
+    padding-bottom: 6px;
+}
+.contact-detail .details li{
+    list-style: none;
+    display: flex;
+    padding: 10px 0;
+}
+.contact-detail .details li i{
+    font-size: 14px;
+    padding-right: 22px;
+}
+.contact-detail .details li p{
+    margin: 0;
+    font-size: 14px;
+}
+.contact-detail .map{
+    width: 55%;
+    height: 400px;
+}
+.contact-detail .map iframe{
+    width: 100%;
+    height: 100%;
+}
+
+
+#footer {
+    width: 90%;
+    background: #362f2f;
+    height: 322px;
+    margin-top:20px;
+    padding:0px 64px;
+    padding-top:57px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#footer .box {
+    width: 300px;
+    color:#fff;
+}
+#footer .box .logo img{
+    width: 25%;
+}
+
+
+#footer .box .quick-menu {
+    margin-top:20px;
+
+}
+
+
+#footer .box .quick-menu .item{
+    margin-bottom:12px;
+    /* margin-left: 10px; */
+
+}
+#footer .box .quick-menu ,.item a{
+    color:#fff;
+    text-decoration: none;
+    margin-left: 0;
+}
+
+
+
+#footer .box form input {
+    width: 290px;
+    height: 42px;
+    background:transparent;
+    padding-left:20px;
+    color:#fff;
+    margin-top:5px;
+}
+
+#footer .box form button {
+    background:#362f2f;
+    box-shadow: 5px 5px 4px rgba(0,0,0.25);
+    width: 163px;
+    height: 38px;
+    margin-top:29px;
+    color:#fff;
+}

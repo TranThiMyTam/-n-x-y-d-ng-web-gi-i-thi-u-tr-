@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="qlsp.css">
+    <title>Qlsp</title>
+</head>
+<body onload="renderListProduce()">
+    <div class="container">
+        <div class="sidebar">
+            <h3>Menu</h3>
+            <!-- Menu links -->
+            <a href="admin.html">Danh mục</a>
+            <a href="QLLSP.html">Quản lý loại sản phẩm</a>
+            <a href="quanlysanpham.html">Quản lý sản phẩm</a>
+            <a href="quanlynhanvien.html">Quản lý nhân viên</a>
+            <a href="quanlykhachhang.html">Quản lý khách hàng</a>
+            <a href="quanlydonhangban.html">Quản lý đơn hàng bán</a>
+            <a href="quanlydonhangnhap.html">Quản lý đơn hàng nhập</a>
+            <a href="quanlynhacungcap.html">Quản lý nhà cung cấp</a>
+            <a href="/login/login.html">Đăng xuất</a>
+        </div>
+        <div class="main">
+            <div class="form-produces">
+                <h3>Thông tin sản phẩm</h3>
+                <div class="column2">
+                    <div>
+                        <label>Mã sản phẩm</label>
+                        <input type="text" id="masp"><br>
+                        <span id="masp-error" class="error"></span>
+                    </div>
+                    <div>
+                        <label>Mã Loại sản phẩm</label>
+                        <input type="text" id="malsp"><br>
+                        <span id="malsp-error" class="error"></span>
+                    </div>
+                    <div>
+                        <label>Ảnh (URL)</label>
+                        <input type="text" id="hinhanh"><br>
+                        <span id="hinhanh-error" class="error"></span>
+                    </div>
+                    <div>
+                        <label>Tên sản phẩm</label>
+                        <input type="text" id="tensp"> <br>
+                        <span id="tensp-error" class="error"></span>
+                    </div>
+                    <div>
+                        <label>Số lượng</label>
+                        <input type="number" id="soluong"> <br>
+                        <span id="soluong-error" class="error"></span>
+                    </div>
+                    <div>
+                        <label>Giá bán</label>
+                        <input type="text" id="giaban"> <br>
+                        <span id="giaban-error" class="error"></span>
+                    </div>
+                    <div>
+                        <label>Mô tả</label>
+                        <input type="text" id="mota"> <br>
+                        <span id="mota-error" class="error"></span>
+                    </div>
+                </div>
+                <button class="save-btn" onclick="save()">Lưu lại</button>
+            </div>
+            <div class="list-SP" id="list-SP">
+                <h3>Danh sách sản phẩm</h3>
+                <table id="grid-produces">
+                    <!-- Product list will be rendered here -->
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script>
+        function renderListProduce(){
+            let produces = localStorage.getItem('produces') ? JSON.parse(localStorage.getItem('produces')) : [];
+            if (produces.length === 0) {
+                document.getElementById('list-SP').style.display = 'none';
+                return false;
+            } 
+            
+            document.getElementById('list-SP').style.display = 'block';
+            let tableContent = `<tr>
+                <th>STT</th>
+                <th>Mã sản phẩm</th>
+                <th>Mã loại sản phẩm</th>
+                <th>Ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá bán</th>
+                <th>Mô tả</th>
+                <th>Hành động</th>
+            </tr>`;
+    
+            produces.forEach((produce, index) => {
+                let stt = index + 1;
+                tableContent += `
+                <tr>
+                    <td>${stt}</td>
+                    <td>${produce.masp}</td>
+                    <td>${produce.malsp}</td>
+                    <td><img src="${produce.hinhanh}" alt="Product Image" width="50"></td>
+                    <td>${produce.tensp}</td>
+                    <td>${produce.soluong}</td>
+                    <td>${produce.giaban}</td>
+                    <td>${produce.mota}</td>
+                    <td>
+                        <button class="edit" onclick='editProduce(${index})'>Edit</button>
+                        <button class="delete" onclick='deleteProduce(${index})'>Delete</button>
+                    </td>
+                </tr>`;
+            });
+    
+            document.getElementById('grid-produces').innerHTML = tableContent;
+        }
+        
+        function editProduce(index){
+            let produces = JSON.parse(localStorage.getItem('produces'));
+            let product = produces[index];
+    
+            document.getElementById('masp').value = product.masp;
+            document.getElementById('malsp').value = product.malsp;
+            document.getElementById('hinhanh').value = product.hinhanh;
+            document.getElementById('tensp').value = product.tensp;
+            document.getElementById('soluong').value = product.soluong;
+            document.getElementById('giaban').value = product.giaban;
+            document.getElementById('mota').value = product.mota;
+    
+            localStorage.setItem('editIndex', index);
+        }
+        
+        function save(){
+            let masp = document.getElementById('masp').value;
+            let malsp = document.getElementById('malsp').value;
+            let hinhanh = document.getElementById('hinhanh').value;
+            let tensp = document.getElementById('tensp').value;
+            let soluong = document.getElementById('soluong').value;
+            let giaban = document.getElementById('giaban').value;
+            let mota = document.getElementById('mota').value;
+    
+            let produces = localStorage.getItem('produces') ? JSON.parse(localStorage.getItem('produces')) : [];
+            let editIndex = localStorage.getItem('editIndex');
+    
+            if (editIndex !== null) {
+                produces[editIndex] = {
+                    masp: masp,
+                    malsp: malsp,
+                    hinhanh: hinhanh,
+                    tensp: tensp,
+                    soluong: soluong,
+                    giaban: giaban,
+                    mota: mota
+                };
+                localStorage.removeItem('editIndex');
+            } else {
+                produces.push({
+                    masp: masp,
+                    malsp: malsp,
+                    hinhanh: hinhanh,
+                    tensp: tensp,
+                    soluong: soluong,
+                    giaban: giaban,
+                    mota: mota
+                });
+            }
+    
+            localStorage.setItem('produces', JSON.stringify(produces));
+    
+            document.getElementById('masp').value = '';
+            document.getElementById('malsp').value = '';
+            document.getElementById('hinhanh').value = '';
+            document.getElementById('tensp').value = '';
+            document.getElementById('soluong').value = '';
+            document.getElementById('giaban').value = '';
+            document.getElementById('mota').value = '';
+    
+            renderListProduce();
+        }
+        
+        function deleteProduce(index){
+            let produces = localStorage.getItem('produces') ? JSON.parse(localStorage.getItem('produces')) : [];
+            produces.splice(index, 1);
+            localStorage.setItem('produces', JSON.stringify(produces));
+            renderListProduce();
+        }
+    </script>
+</body>
+</html>

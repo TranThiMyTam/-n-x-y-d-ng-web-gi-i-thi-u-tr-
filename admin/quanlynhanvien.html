@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="QLNV.css">
+    <title>qlnv</title>
+</head>
+<body onload="renderListStaff()">
+    <div class="grid">
+        <div class="colum2">
+            <h3 style="padding-left: 25px;">Menu</h3>
+            <a href="admin.html">Danh mục</a>
+            <a href="QLLSP.html">Quản lý loại sản phẩm</a>
+            <a href="quanlysanpham.html">Quản lý sản phẩm</a>
+            <a href="quanlynhanvien.html">Quản lý nhân viên</a>
+            <a href="quanlykhachhang.html">Quản lý khách hàng</a>
+            <a href="quanlydonhangnhban.html">Quản lý đơn hàng bán</a>
+            <a href="quanlydonhangnhap.html">Quản lý đơn hàng nhập</a>
+            <a href="quanlynhacungcap.html">Quản lý nhà cung cấp</a>
+            <a href="/login/login.html"> Đăng xuất</a>
+        </div>
+        <div class="form-nhanvien">
+            <h3>Thông tin nhân viên</h3>
+            <label>Mã nhân viên</label>
+            <input type="text" id="manv"> <br>
+            <span id="manv-error" class="error"></span>
+            <br>
+            <label>Họ và tên</label>
+            <input type="text" id="fullname" ><br>
+            <span id="fullname-error" class="error"></span>
+            <br>
+            <label>Quê quán</label>
+            <input type="text" id="address"><br>
+            <span id="address-error" class="error"></span>
+            <br>
+            <label>Số điện thoại</label>
+            <input type="text" id="phone"> <br>
+            <span id="phone-error" class="error"></span>
+            <br>
+            <label >&nbsp;</label>
+            <button onclick="save()">Lưu lại</button>
+        </div>
+    </div>
+    <div class="list-nhanvien" id="list-nhanvien">
+        <h3>Danh sách nhân viên </h3>
+        <table id="grid-staffs" width="650px" cellpadding="0" cellpadding="0">
+            
+        </table>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+<script>
+    let editIndex = -1; // Biến để lưu trữ vị trí nhân viên đang được chỉnh sửa
+    
+    function save(){
+        let manv = document.getElementById('manv').value;
+        let fullname = document.getElementById('fullname').value;
+        let address = document.getElementById('address').value;
+        let phone = document.getElementById('phone').value;
+        
+        // Kiểm tra và xử lý lỗi
+        let isValid = true;
+        if (_.isEmpty(manv)){
+            document.getElementById('manv-error').innerHTML = 'Vui lòng nhập mã nhân viên!';
+            isValid = false;
+        } else if (manv.trim().length > 10) {
+            document.getElementById('manv-error').innerHTML = 'Mã nhân viên không được lớn hơn 10 ký tự!';
+            isValid = false;
+        } else {
+            document.getElementById('manv-error').innerHTML = '';
+        }
+        
+        if (_.isEmpty(fullname)){
+            document.getElementById('fullname-error').innerHTML = 'Vui lòng nhập họ và tên!';
+            isValid = false;
+        } else if(fullname.trim().length <= 2) {
+            document.getElementById('fullname-error').innerHTML = 'Họ và tên không được nhỏ hơn 2 ký tự!';
+            isValid = false;
+        } else if (fullname.trim().length > 50) {
+            document.getElementById('fullname-error').innerHTML = 'Họ và tên không được lớn hơn 50 ký tự!';
+            isValid = false;
+        } else {
+            document.getElementById('fullname-error').innerHTML = '';
+        }
+
+        if (_.isEmpty(address)){
+            document.getElementById('address-error').innerHTML = 'Vui lòng nhập quê quán!';
+            isValid = false;
+        } else if(address.trim().length <= 2) {
+            document.getElementById('address-error').innerHTML = 'Quê quán không được nhỏ hơn 2 ký tự!';
+            isValid = false;
+        } else if (address.trim().length > 50) {
+            document.getElementById('address-error').innerHTML = 'Quê quán không được lớn hơn 50 ký tự!';
+            isValid = false;
+        } else {
+            document.getElementById('address-error').innerHTML = '';
+        }
+
+        if (_.isEmpty(phone)) {
+            document.getElementById('phone-error').innerHTML = 'Vui lòng nhập số điện thoại!';
+            isValid = false;
+        } else if(phone.trim().length > 10) {
+            document.getElementById('phone-error').innerHTML = 'Số điện thoại không đúng!';
+            isValid = false;
+        } else {
+            document.getElementById('phone-error').innerHTML = '';
+        }
+        
+        if (isValid) {
+            let staffs = localStorage.getItem('staffs') ? JSON.parse(localStorage.getItem('staffs')) : [];
+            if (editIndex === -1) {
+                // Thêm mới nhân viên
+                staffs.push({
+                    manv: manv,
+                    fullname: fullname,
+                    address: address,
+                    phone: phone,
+                });
+            } else {
+                // Chỉnh sửa nhân viên
+                staffs[editIndex] = {
+                    manv: manv,
+                    fullname: fullname,
+                    address: address,
+                    phone: phone,
+                };
+                editIndex = -1; // Reset editIndex sau khi lưu
+            }
+            localStorage.setItem('staffs', JSON.stringify(staffs));
+            renderListStaff();
+            clearInputFields(); // Xóa trường nhập liệu sau khi lưu
+        }
+    }
+
+    function renderListStaff(){
+        let staffs = localStorage.getItem('staffs') ? JSON.parse(localStorage.getItem('staffs')) : [];
+        if (staffs.length === 0) {
+            document.getElementById('list-nhanvien').style.display = 'none';
+            return false;
+        }
+
+        document.getElementById('list-nhanvien').style.display = 'block';
+        let tableContent = `<tr>
+            <td>STT</td>
+            <td width='50'>Mã nhân viên</td>
+            <td>Họ và tên</td>
+            <td>Quê quán</td>
+            <td>Số điện thoại</td>
+            <td>Hành động</td></tr>`;
+
+        staffs.forEach((staff, index) => {
+            let staffId = index;
+            index++;
+            tableContent +=`<tr>
+                <td>${index}</td>
+                <td>${staff.manv}</td>
+                <td>${staff.fullname}</td>
+                <td>${staff.address}</td>
+                <td>${staff.phone}</td>
+                <td>
+                    <a href='#' onclick='editStaff(${staffId})'>Edit</a> | <a href='#' onclick='deleteStaff(${staffId})'>Delete</a>
+                </td>
+            </tr>`;
+        })
+        document.getElementById('grid-staffs').innerHTML = tableContent;
+    }
+
+    function deleteStaff(id){
+        let staffs = localStorage.getItem('staffs') ? JSON.parse(localStorage.getItem('staffs')) : [];
+        staffs.splice(id, 1);
+        localStorage.setItem('staffs', JSON.stringify(staffs));
+        renderListStaff();
+    }
+
+    function editStaff(id) {
+        let staffs = localStorage.getItem('staffs') ? JSON.parse(localStorage.getItem('staffs')) : [];
+        let staff = staffs[id];
+        document.getElementById('manv').value = staff.manv;
+        document.getElementById('fullname').value = staff.fullname;
+        document.getElementById('address').value = staff.address;
+        document.getElementById('phone').value = staff.phone;
+        editIndex = id; // Lưu trữ vị trí nhân viên đang được chỉnh sửa
+    }
+
+    function clearInputFields() {
+        document.getElementById('manv').value = '';
+        document.getElementById('fullname').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('phone').value = '';
+    }
+</script>
+</html>
